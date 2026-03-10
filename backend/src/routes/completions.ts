@@ -24,7 +24,7 @@ completionsRouter.get('/', async (_req, res) => {
   }
 });
 
-completionsRouter.post('/toggle', async (req, res) => {
+completionsRouter.patch('/toggle', async (req, res) => {
   try {
     const { habitId } = req.body;
     
@@ -46,7 +46,8 @@ completionsRouter.post('/toggle', async (req, res) => {
     }
 
     // Flip the current completed state: true -> false, false -> true.
-    const newCompleted = !habit.completed;
+    // Expect boolean value
+    const newCompleted: boolean = !habit.completed;
 
     const { error: updateError } = await supabase
       .from('habits')
