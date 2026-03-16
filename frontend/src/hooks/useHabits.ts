@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import { Habit } from '../types';
-import { api } from '../lib/api';
+import { apiFetch } from '../lib/api';
 
 export function useHabits() {
   const [habits, setHabits] = useState<Habit[]>([]);
@@ -12,36 +12,38 @@ export function useHabits() {
   }, []);
 
   const fetchHabits = async () => {
-    try {
-      setLoading(true);
-      const data = await api.getHabits();
-      setHabits(data ?? []);
-    } catch (err) {
-      setError(err instanceof Error ? err.message : 'Failed to fetch habits');
-    } finally {
-      setLoading(false);
-    }
+    setLoading(true);
+    const data = await apiFetch<Habit[]>('/api/habits', 
+      { method: 'GET' });
+    setHabits(data ?? []);
+    setLoading(false);
   };
 
   const addHabit = async (name: string, color: string) => {
-    try {
-      const data = await api.addHabit(name, color);
-      setHabits([data, ...habits]);
-      return data;
-    } catch (err) {
-      setError(err instanceof Error ? err.message : 'Failed to add habit');
-      throw err;
-    }
-  };
+    // Create the new habit object
+    const newHabit: Habit = {
+      id: crypto.randomUUID(),
+      name: name,
+      color: color,
+      created_at: new Date().toISOString()
+    };
 
+    // Add the habit to the list
+    const data: Habit = await apiFetch<Habit>('/api/habits', 
+      { method: 'POST', body: newHabit });
+    
+    // Add the habit to the list
+    setHabits([data, ...habits]);
+    return data;
+  };
+ 
   const deleteHabit = async (id: string) => {
-    try {
-      await api.deleteHabit(id);
-      setHabits(habits.filter(h => h.id !== id));
-    } catch (err) {
-      setError(err instanceof Error ? err.message : 'Failed to delete habit');
-      throw err;
-    }
+    // Don't need to return any data
+    await apiFetch<void>('/api/habits/' + id, 
+      { method: 'DELETE' });
+
+    // Remove the habit from the list
+    setHabits(habits.filter(h => h.id !== id));
   };
 
   return {
