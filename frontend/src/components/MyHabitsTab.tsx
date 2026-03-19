@@ -28,7 +28,6 @@ export function MyHabitsTab({ habits, loading, onAddHabit, onDeleteHabit }: MyHa
     so it can re-fetch the habits list.
   ──────────────────────────────────────────────────────────── */
   const handleSubmit = async (e: React.FormEvent) => {
-    // Prevent the default form submission behavior
     e.preventDefault();
 
     // Validate the form

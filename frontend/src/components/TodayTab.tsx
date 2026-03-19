@@ -3,7 +3,7 @@ import { Habit } from '../types';
 
 interface TodayTabProps {
   habits: Habit[];
-  onToggleHabit: (id: string) => Promise<void>; // was missing from interface
+  onToggleHabit: (id: string) => Promise<void>;
 }
 
 export function TodayTab({ habits, onToggleHabit }: TodayTabProps) {
