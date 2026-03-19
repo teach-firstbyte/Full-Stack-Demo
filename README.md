@@ -1,6 +1,8 @@
-# Full-Stack Habit Tracker
+# Advanced Frontend Demo
 
-React frontend and Express backend talking to Supabase.
+For Day 3 of ViTaL Workshops!
+
+Learn how to use React and TypeScript by turning your old HTML/CSS/JS into React Components and use them in your full-stack Habit Tracker Web App!
 
 ## Structure
 
