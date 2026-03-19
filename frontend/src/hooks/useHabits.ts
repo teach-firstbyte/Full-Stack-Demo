@@ -6,9 +6,7 @@ export function useHabits() {
   const [habits, setHabits] = useState<Habit[]>([]);
   const [loading, setLoading] = useState(true);
 
-  useEffect(() => {
-    fetchHabits();
-  }, []);
+  // Use UseEffect to fetch habits when the component mounts!
 
   // Fetch all habits from the backend
   async function fetchHabits() {
