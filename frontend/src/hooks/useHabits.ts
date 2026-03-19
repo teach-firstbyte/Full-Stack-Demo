@@ -5,7 +5,6 @@ import { apiFetch } from '../lib/api';
 export function useHabits() {
   const [habits, setHabits] = useState<Habit[]>([]);
   const [loading, setLoading] = useState(true);
-  const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
     fetchHabits();
@@ -20,21 +19,19 @@ export function useHabits() {
   };
 
   const addHabit = async (name: string, color: string) => {
-    // Create the new habit object
-    const newHabit: Habit = {
+    let newHabit: Habit = {
       id: crypto.randomUUID(),
       name: name,
       color: color,
+      completed: false,
       created_at: new Date().toISOString()
     };
 
-    // Add the habit to the list
-    const data: Habit = await apiFetch<Habit>('/api/habits', 
+    const response = await apiFetch<Habit>('/api/habits', 
       { method: 'POST', body: newHabit });
     
-    // Add the habit to the list
-    setHabits([data, ...habits]);
-    return data;
+    setHabits([response, ...habits]);
+    return response;
   };
  
   const deleteHabit = async (id: string) => {
@@ -49,7 +46,6 @@ export function useHabits() {
   return {
     habits,
     loading,
-    error,
     addHabit,
     deleteHabit,
     refetch: fetchHabits,

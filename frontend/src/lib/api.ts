@@ -1,9 +1,8 @@
-import { Habit } from '../types';
 const API_URL = 'http://localhost:3001';
 
 export async function apiFetch<T>(
   url: string,
-  options: { method: string; body?: Habit }
+  options: { method: string; body?: unknown }
 ): Promise<T> {
 
   const res: Response = await fetch(API_URL + url, {

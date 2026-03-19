@@ -1,5 +1,5 @@
 import { Habit } from '../types';
-import { useHabitCompletions } from '../hooks/useHabitCompletions';
+import { apiFetch } from '../lib/api';
 
 interface TodayTabProps {
   habits: Habit[];
@@ -7,22 +7,21 @@ interface TodayTabProps {
 
 export function TodayTab({ habits }: TodayTabProps) {
   const today = new Date();
-  const { completions, toggleCompletion } = useHabitCompletions(today);
 
-  const completedCount = completions.length;
+  const completedCount = habits.filter((h: Habit) => h.completed).length;
   const totalCount = habits.length;
   const percentage = totalCount === 0 ? 0 : Math.round((completedCount / totalCount) * 100);
 
   const handleHabitToggle = async (habitId: string) => {
     try {
-      await toggleCompletion(habitId, today);
+      await apiFetch<boolean>('/api/completions/toggle', { method: 'PATCH', body: { habitId } });
     } catch (err) {
       console.error('Failed to toggle habit:', err);
     }
   };
 
   const isHabitCompleted = (habitId: string) => {
-    return completions.some(c => c.habit_id === habitId);
+    return habits.some(h => h.id === habitId && h.completed);
   };
 
   const formatDate = () => {
