@@ -8,11 +8,14 @@ type Tab = 'today' | 'habits';
 
 function App() {
   const [activeTab, setActiveTab] = useState<Tab>('today');
-  const { habits, loading, refetch } = useHabits();
 
-  const handleHabitAdded = () => {
-    refetch();
-  };
+  const { 
+    habits, 
+    loading, 
+    toggleHabit, 
+    addHabit, 
+    deleteHabit 
+  } = useHabits();
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-50">
@@ -20,9 +23,14 @@ function App() {
 
       <div className="pb-16">
         {activeTab === 'today' ? (
-          <TodayTab habits={habits} />
+          <TodayTab habits={habits} onToggleHabit={toggleHabit} />
         ) : (
-          <MyHabitsTab habits={habits} loading={loading} onHabitAdded={handleHabitAdded} />
+          <MyHabitsTab
+            habits={habits}
+            loading={loading}
+            onAddHabit={addHabit}
+            onDeleteHabit={deleteHabit}
+          />
         )}
       </div>
     </div>

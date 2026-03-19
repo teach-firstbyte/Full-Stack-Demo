@@ -1,4 +1,8 @@
 /*
+  # This is the second migration file for the Supabase schema 
+  if you want to add a by-date completion tracking table
+  (for example, if you want to track how many times a habit was completed each day)
+  
   # PUT THIS INTO SUPABASE SCHEMA TO CREATE THE HABIT_COMPLETIONS TABLE
   # Date-specific tracking: one row per habit per day
 */
